@@ -141,3 +141,21 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	// return the token pair, and no error
 	return tokenPairs, nil
 }
+
+// GetRefreshCookie returns a cookie containing the refresh token. Note that
+// the cookie is http only, secure, and set to same site strict mode.
+func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
+	c := &http.Cookie{
+		Name:     "__Host-refresh_token",
+		Path:     "/",
+		Value:    refreshToken,
+		Expires:  time.Now().Add(j.RefreshExpiry),
+		MaxAge:   int(j.RefreshExpiry.Seconds()),
+		SameSite: http.SameSiteStrictMode,
+		Domain:   "localhost",
+		HttpOnly: true,
+		Secure:   true,
+	}
+
+	return c
+}
