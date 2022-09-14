@@ -18,6 +18,7 @@ type Auth struct {
 	CookiePath    string        `default:"/"` // the path, for refresh cookies (defaults to "/")
 	TokenExpiry   time.Duration // when does the token expire, e.g. time.Minute * 15
 	RefreshExpiry time.Duration // when does the refresh token expire, e.g. time.Hour * 24
+	CookieName    string        `default:"__Host-refresh_token"` // the name of the refresh token cookie
 }
 
 // User is a generic type used to hold the minimal amount of data
@@ -150,7 +151,7 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 // the cookie is http only, secure, and set to same site strict mode.
 func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	c := &http.Cookie{
-		Name:     "__Host-refresh_token",
+		Name:     j.CookieName,
 		Path:     j.CookiePath,
 		Value:    refreshToken,
 		Expires:  time.Now().Add(j.RefreshExpiry),
@@ -165,10 +166,10 @@ func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 }
 
 // GetExpiredRefreshCookie is a convenience method to return a cookie suitable
-// for forcing a user's browser to delete the existing __Host-refresh_token cookie.
+// for forcing a user's browser to delete the existing cookie.
 func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
 	return &http.Cookie{
-		Name:     "__Host-refresh_token",
+		Name:     j.CookieName,
 		Value:    "",
 		Domain:   j.CookieDomain,
 		Path:     j.CookiePath,
