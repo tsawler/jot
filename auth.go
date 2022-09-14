@@ -38,9 +38,9 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-// getTokenFromHeaderAndVerify extracts a token from the Authorization header, verifies it, and returns the
+// GetTokenFromHeaderAndVerify extracts a token from the Authorization header, verifies it, and returns the
 // token, the claims, and error, if any.
-func (j *Auth) getTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Request) (string, *Claims, error) {
+func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Request) (string, *Claims, error) {
 	// add a header (as we should)
 	w.Header().Add("Vary", "Authorization")
 
@@ -97,7 +97,7 @@ func (j *Auth) getTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 	return token, claims, nil
 }
 
-func (j *Auth) generateTokenPair(user *User) (TokenPairs, error) {
+func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 
