@@ -9,6 +9,10 @@
 A simple package to implement generating and verifying JWT tokens. It generates and verifies both auth tokens and 
 refresh tokens.
 
+This module uses [github.com/golang-jwt/jwt/v4](github.com/golang-jwt/jwt/v4) for token generation and validation. It
+simply adds some convenience methods for extracting a token
+from request headers and validating it, and for getting refresh token cookies.
+
 Usage:
 
 ~~~Go
