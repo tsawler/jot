@@ -17,6 +17,7 @@ func TestMain(m *testing.M) {
 		Secret:        "verysecret",
 		TokenExpiry:   time.Minute * 15,
 		RefreshExpiry: time.Hour * 24,
+		Domain:        "localhost",
 	}
 
 	// generate a token
