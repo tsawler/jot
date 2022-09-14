@@ -90,7 +90,10 @@ func TestJotGetRefreshCookie(t *testing.T) {
 
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
-	_ = app.GetRefreshCookie(tokens.RefreshToken)
+	c := app.GetRefreshCookie(tokens.RefreshToken)
+	if !c.Expires.After(time.Now()) {
+		t.Error("cookie expiration not set to future, and should be")
+	}
 }
 
 func TestJotGetExpiredRefreshCookie(t *testing.T) {
