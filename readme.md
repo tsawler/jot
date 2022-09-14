@@ -3,6 +3,7 @@
 [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/tsawler/jot/master/LICENSE)
 ![Tests](https://github.com/tsawler/jot/actions/workflows/tests.yml/badge.svg)
 <a href="https://pkg.go.dev/github.com/tsawler/jot"><img src="https://img.shields.io/badge/godoc-reference-%23007d9c.svg"></a>
+[![Go Report Card](https://goreportcard.com/badge/github.com/tsawler/jot)](https://goreportcard.com/report/github.com/tsawler/jot)
 
 
 # Jot
