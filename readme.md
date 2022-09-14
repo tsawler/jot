@@ -6,5 +6,5 @@
 
 # Jot
 
-A simple package to implement generating and 
-verifying JWT tokens. It generates and verifies both auth tokens and refresh tokens.
+A simple package to implement generating and verifying JWT tokens. It generates and verifies both auth tokens and 
+refresh tokens.
