@@ -36,7 +36,7 @@ func main() {
 		Secret:        "verysecretkey",
 		TokenExpiry:   time.Minute * 15,
 		RefreshExpiry: time.Hour * 24,
-		Domain:        "localhost",
+		CookieDomain:  "localhost",
 	}
 
 	// set up a test user

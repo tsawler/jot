@@ -14,8 +14,8 @@ type Auth struct {
 	Issuer        string        // who issues the token, e.g. company.com
 	Audience      string        // who is the token for, e.g. company.com
 	Secret        string        // a strong secret, used to sign the tokens
-	Domain        string        // the domain, for refresh cookies
-	Path          string        `default:"/"` // the path, for refresh cookies (defaults to "/")
+	CookieDomain  string        // the domain, for refresh cookies
+	CookiePath    string        `default:"/"` // the path, for refresh cookies (defaults to "/")
 	TokenExpiry   time.Duration // when does the token expire, e.g. time.Minute * 15
 	RefreshExpiry time.Duration // when does the refresh token expire, e.g. time.Hour * 24
 }
@@ -151,12 +151,12 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	c := &http.Cookie{
 		Name:     "__Host-refresh_token",
-		Path:     "/",
+		Path:     j.CookiePath,
 		Value:    refreshToken,
 		Expires:  time.Now().Add(j.RefreshExpiry),
 		MaxAge:   int(j.RefreshExpiry.Seconds()),
 		SameSite: http.SameSiteStrictMode,
-		Domain:   j.Domain,
+		Domain:   j.CookieDomain,
 		HttpOnly: true,
 		Secure:   true,
 	}
@@ -170,8 +170,8 @@ func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
 	return &http.Cookie{
 		Name:     "__Host-refresh_token",
 		Value:    "",
-		Domain:   j.Domain,
-		Path:     "/",
+		Domain:   j.CookieDomain,
+		Path:     j.CookiePath,
 		MaxAge:   -1,
 		Expires:  time.Unix(0, 0),
 		HttpOnly: true,
