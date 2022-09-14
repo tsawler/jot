@@ -12,7 +12,8 @@ var expiredToken string
 
 func TestMain(m *testing.M) {
 	app = Auth{
-		Domain:        "example.com",
+		Issuer:        "example.com",
+		Audience:      "example.com",
 		Secret:        "verysecret",
 		TokenExpiry:   time.Minute * 15,
 		RefreshExpiry: time.Hour * 24,

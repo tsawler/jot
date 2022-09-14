@@ -11,14 +11,15 @@ import (
 
 // Auth is the type used to instantiate this package.
 type Auth struct {
-	Domain        string
+	Issuer        string
+	Audience      string
 	Secret        string
 	TokenExpiry   time.Duration
 	RefreshExpiry time.Duration
 }
 
 // User is a generic type used to hold the minimal amount of data
-// we require for a user to be issued tokens.
+// we require in order to issue tokens.
 type User struct {
 	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
@@ -34,7 +35,6 @@ type TokenPairs struct {
 
 // Claims is the type used to describe the claims in a given token.
 type Claims struct {
-	Username string `json:"name"`
 	jwt.RegisteredClaims
 }
 
@@ -88,7 +88,7 @@ func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 	}
 
 	// make sure we issued this token
-	if claims.Issuer != j.Domain {
+	if claims.Issuer != j.Issuer {
 		// we did not issue this token
 		return "", nil, errors.New("incorrect issuer")
 	}
@@ -105,8 +105,8 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
 	claims["sub"] = fmt.Sprint(user.ID)
-	claims["aud"] = j.Domain
-	claims["iss"] = j.Domain
+	claims["aud"] = j.Audience
+	claims["iss"] = j.Issuer
 	claims["iat"] = time.Now().UTC().Unix()
 
 	// set expiry; should be short!

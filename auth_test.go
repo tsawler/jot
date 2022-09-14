@@ -16,8 +16,6 @@ func Test_app_getTokenFromHeaderAndVerify(t *testing.T) {
 
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
-	t.Log("Issuer in test is", app.Domain)
-
 	tests := []struct {
 		name          string
 		token         string
@@ -62,14 +60,14 @@ func Test_app_getTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 	}
 
 	// save existing domain
-	oldDomain := app.Domain
+	oldDomain := app.Issuer
 	// set to other domain
-	app.Domain = "other.org"
+	app.Issuer = "other.org"
 	// issue token with other.org as issuer
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
-	// set domain back to example.com
-	app.Domain = oldDomain
+	// set issuer back to example.com
+	app.Issuer = oldDomain
 	req, _ := http.NewRequest("GET", "/", nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", tokens.Token))
 
