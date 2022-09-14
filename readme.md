@@ -17,7 +17,6 @@ package main
 import (
 	"fmt"
 	"github.com/tsawler/jot"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"time"
@@ -42,31 +41,45 @@ func main() {
 
 	// generate tokens
 	tokenPairs, _ := j.GenerateTokenPair(&someUser)
-	log.Println("Token:", tokenPairs.Token)
-	log.Println("Refresh Token:", tokenPairs.RefreshToken)
+	fmt.Println("Token:", tokenPairs.Token)
+	fmt.Println("Refresh Token:", tokenPairs.RefreshToken)
 
 	// get a refresh token cookie
 	cookie := j.GetRefreshCookie(tokenPairs.RefreshToken)
-	log.Println("Cookie expiration:", cookie.Expires.UTC())
+	fmt.Println("Cookie expiration:", cookie.Expires.UTC())
 
 	// assuming that you are running a web app, you'll have a handler
 	// that takes a request with the Authorization header set to
 	// Bearer <some token>
 	// where <some token> is a JWT token
-	
+
 	// let's build a request/response pair to send to GetTokenFromHeaderAndVerify
 	res := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/some-route", nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", tokenPairs.Token))
 
 	// call GetTokenFromHeaderAndVerify
+	fmt.Println("Trying a valid token...")
 	_, _, err := j.GetTokenFromHeaderAndVerify(res, req)
-	
+
 	// print out validation results
 	if err != nil {
-		log.Println("Invalid token:", err.Error())
+		fmt.Println("Invalid token:", err.Error())
 	} else {
-		log.Println("Valid token!")
+		fmt.Println("Valid token!")
+	}
+
+	// now send it an invalid token
+	res = httptest.NewRecorder()
+	req, _ = http.NewRequest("GET", "/some-route", nil)
+	req.Header.Set("Authorization", "Bearer someinvalidtoken")
+
+	fmt.Println("Trying an invalid token...")
+	_, _, err = j.GetTokenFromHeaderAndVerify(res, req)
+	if err != nil {
+		fmt.Println("Invalid token:", err.Error())
+	} else {
+		fmt.Println("Valid token!")
 	}
 }
 ~~~
