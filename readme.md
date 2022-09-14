@@ -88,5 +88,15 @@ func main() {
 	} else {
 		fmt.Println("Valid token!")
 	}
+
+	// you can also get cookies with the refresh token easily...
+	c := j.GetRefreshCookie(tokenPairs.RefreshToken)
+	fmt.Println("Refresh cookie expiry:", c.Expires.UTC())
+
+	// and also expired refresh cookies, to force the users's browser to
+	// delete the refresh cookie:
+	expiredCookie := j.GetExpiredRefreshCookie()
+	fmt.Println("Expired refresh cookie expiry:", expiredCookie.Expires.UTC())
+
 }
 ~~~
