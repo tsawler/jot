@@ -7,5 +7,5 @@
 
 # Jot
 
-A simple package to implement authenticating and 
-generating JWT token pairs (token/refresh token).
+A simple package to implement generating and 
+verifying JWT tokens. It generates and verifies both auth tokens and refresh token).
