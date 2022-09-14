@@ -14,6 +14,7 @@ type Auth struct {
 	Issuer        string
 	Audience      string
 	Secret        string
+	Domain        string
 	TokenExpiry   time.Duration
 	RefreshExpiry time.Duration
 }
@@ -152,7 +153,7 @@ func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 		Expires:  time.Now().Add(j.RefreshExpiry),
 		MaxAge:   int(j.RefreshExpiry.Seconds()),
 		SameSite: http.SameSiteStrictMode,
-		Domain:   "localhost",
+		Domain:   j.Domain,
 		HttpOnly: true,
 		Secure:   true,
 	}
