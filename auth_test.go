@@ -79,3 +79,15 @@ func Test_app_getTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 	}
 
 }
+
+func Test_app_GetRefreshCookie(t *testing.T) {
+	testUser := User{
+		ID:        1,
+		FirstName: "Admin",
+		LastName:  "User",
+	}
+
+	tokens, _ := app.GenerateTokenPair(&testUser)
+
+	_ = app.GetRefreshCookie(tokens.RefreshToken)
+}
