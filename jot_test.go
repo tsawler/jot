@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
-func Test_auth_GetTokenFromHeaderAndVerify(t *testing.T) {
+func TestJotGetTokenFromHeaderAndVerify(t *testing.T) {
 	testUser := User{
 		ID:        1,
 		FirstName: "Admin",
@@ -52,7 +53,7 @@ func Test_auth_GetTokenFromHeaderAndVerify(t *testing.T) {
 	}
 }
 
-func Test_auth_GetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
+func TestJotGetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 	testUser := User{
 		ID:        1,
 		FirstName: "Admin",
@@ -80,7 +81,7 @@ func Test_auth_GetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 
 }
 
-func Test_auth_GetRefreshCookie(t *testing.T) {
+func TestJotGetRefreshCookie(t *testing.T) {
 	testUser := User{
 		ID:        1,
 		FirstName: "Admin",
@@ -90,4 +91,11 @@ func Test_auth_GetRefreshCookie(t *testing.T) {
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
 	_ = app.GetRefreshCookie(tokens.RefreshToken)
+}
+
+func TestJotGetExpiredRefreshCookie(t *testing.T) {
+	c := app.GetExpiredRefreshCookie()
+	if c.Expires.After(time.Now()) {
+		t.Error("cookie expiration set to future, and should not be")
+	}
 }
