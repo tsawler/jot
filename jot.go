@@ -98,6 +98,8 @@ func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 	return token, claims, nil
 }
 
+// GenerateTokenPair takes a user of type jot.User and attempts to generate a pair of tokens
+// for that user (jwt and refresh tokens).
 func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -159,4 +161,20 @@ func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	}
 
 	return c
+}
+
+// GetExpiredRefreshCookie is a convenience method to return a cookie suitable
+// for forcing a user's browser to delete the existing __Host-refresh_token cookie.
+func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
+	return &http.Cookie{
+		Name:     "__Host-refresh_token",
+		Value:    "",
+		Domain:   j.Domain,
+		Path:     "/",
+		MaxAge:   -1,
+		Expires:  time.Unix(0, 0),
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+		Secure:   true,
+	}
 }
