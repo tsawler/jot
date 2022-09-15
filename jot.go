@@ -44,7 +44,6 @@ type Claims struct {
 // GetTokenFromHeaderAndVerify extracts a token from the Authorization header, verifies it, and returns the
 // token, the claims, and error, if any.
 func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Request) (string, *Claims, error) {
-	// add a header (as we should)
 	w.Header().Add("Vary", "Authorization")
 
 	// get the Authorization header
