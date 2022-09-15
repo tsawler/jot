@@ -17,7 +17,7 @@ from request headers and validating it, and for getting refresh token cookies.
 
 Usage:
 
-~~~Go
+```golang
 package main
 
 import (
@@ -99,4 +99,4 @@ func main() {
 	fmt.Println("Expired refresh cookie expiry:", expiredCookie.Expires.UTC())
 
 }
-~~~
+```
