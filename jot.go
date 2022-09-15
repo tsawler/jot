@@ -14,10 +14,10 @@ type Auth struct {
 	Issuer        string        // who issues the token, e.g. company.com
 	Audience      string        // who is the token for, e.g. company.com
 	Secret        string        // a strong secret, used to sign the tokens
-	CookieDomain  string        // the domain, for refresh cookies
-	CookiePath    string        `default:"/"` // the path, for refresh cookies (defaults to "/")
 	TokenExpiry   time.Duration // when does the token expire, e.g. time.Minute * 15
 	RefreshExpiry time.Duration // when does the refresh token expire, e.g. time.Hour * 24
+	CookieDomain  string        // the domain, for refresh cookies
+	CookiePath    string        `default:"/"`                    // the path, for refresh cookies (defaults to "/")
 	CookieName    string        `default:"__Host-refresh_token"` // the name of the refresh token cookie
 }
 
@@ -113,6 +113,7 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	claims["aud"] = j.Audience
 	claims["iss"] = j.Issuer
 	claims["iat"] = time.Now().UTC().Unix()
+	claims["typ"] = "JWT"
 
 	// set expiry; should be short!
 	claims["exp"] = time.Now().UTC().Add(j.TokenExpiry).Unix()
@@ -128,6 +129,7 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	refreshTokenClaims := refreshToken.Claims.(jwt.MapClaims)
 	refreshTokenClaims["sub"] = fmt.Sprint(user.ID)
 	refreshTokenClaims["iat"] = time.Now().UTC().Unix()
+
 	// set expiry; must be longer than JWT token expiry!
 	refreshTokenClaims["exp"] = time.Now().UTC().Add(j.RefreshExpiry).Unix()
 
