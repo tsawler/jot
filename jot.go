@@ -89,13 +89,13 @@ func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 		return "", nil, err
 	}
 
-	// make sure we issued this token
+	// Make sure we issued this token.
 	if claims.Issuer != j.Issuer {
 		// we did not issue this token
 		return "", nil, errors.New("incorrect issuer")
 	}
 
-	// if we get this far, the token is valid, so we return it, along with the claims
+	// If we get this far, the token is valid, so we return it, along with the claims.
 	return token, claims, nil
 }
 
