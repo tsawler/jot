@@ -92,14 +92,17 @@ func TestJotGetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 }
 
 func TestJotGetRefreshCookie(t *testing.T) {
+	// create a test user
 	testUser := User{
 		ID:        1,
 		FirstName: "Admin",
 		LastName:  "User",
 	}
 
+	// generate tokens
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
+	// get a refresh cookie
 	c := app.GetRefreshCookie(tokens.RefreshToken)
 	if !c.Expires.After(time.Now()) {
 		t.Error("cookie expiration not set to future, and should be")
@@ -107,6 +110,7 @@ func TestJotGetRefreshCookie(t *testing.T) {
 }
 
 func TestJotGetExpiredRefreshCookie(t *testing.T) {
+	// call GetExpiredRefreshCookie
 	c := app.GetExpiredRefreshCookie()
 	if c.Expires.After(time.Now()) {
 		t.Error("cookie expiration set to future, and should not be")
