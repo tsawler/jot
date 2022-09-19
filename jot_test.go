@@ -35,13 +35,18 @@ func TestJotGetTokenFromHeaderAndVerify(t *testing.T) {
 	}
 
 	for _, e := range tests {
+		// create a request
 		req, _ := http.NewRequest("GET", "/", nil)
+
+		// set authorization header, if appropriate
 		if e.setHeader {
 			req.Header.Set("Authorization", e.token)
 		}
 
+		// create a response recorder
 		rr := httptest.NewRecorder()
 
+		// try to verify token
 		_, _, err := app.GetTokenFromHeaderAndVerify(rr, req)
 		if err != nil && !e.errorExpected {
 			t.Errorf("%s: did not expect error, but got one - %v", e.name, err)
@@ -54,6 +59,7 @@ func TestJotGetTokenFromHeaderAndVerify(t *testing.T) {
 }
 
 func TestJotGetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
+	// create a test user
 	testUser := User{
 		ID:        1,
 		FirstName: "Admin",
@@ -69,11 +75,15 @@ func TestJotGetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 
 	// set issuer back to example.com
 	app.Issuer = oldDomain
+
+	// create a request and set header
 	req, _ := http.NewRequest("GET", "/", nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", tokens.Token))
 
+	// create a response recorder
 	rr := httptest.NewRecorder()
 
+	// try to verify token
 	_, _, err := app.GetTokenFromHeaderAndVerify(rr, req)
 	if err == nil {
 		t.Error("should have error for bad issuer, but do not")
