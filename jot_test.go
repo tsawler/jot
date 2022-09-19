@@ -9,14 +9,17 @@ import (
 )
 
 func TestJotGetTokenFromHeaderAndVerify(t *testing.T) {
+	// create a test user; we need it to generate tokens
 	testUser := User{
 		ID:        1,
 		FirstName: "Admin",
 		LastName:  "User",
 	}
 
+	// create token pair
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
+	// set up table tests
 	tests := []struct {
 		name          string
 		token         string
@@ -68,8 +71,10 @@ func TestJotGetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 
 	// save existing domain
 	oldDomain := app.Issuer
+
 	// set to other domain
 	app.Issuer = "other.org"
+
 	// issue token with other.org as issuer
 	tokens, _ := app.GenerateTokenPair(&testUser)
 
