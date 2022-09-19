@@ -30,8 +30,11 @@ func TestMain(m *testing.M) {
 	claims["admin"] = true
 	claims["aud"] = "example.com"
 	claims["iss"] = "example.com"
+	// we'll set expires to the past, so we can have an expired token
 	expires := time.Now().UTC().Add(time.Hour * 100 * -1)
 	claims["exp"] = expires.Unix()
+
+	// generate an expired token
 	expiredToken, _ = token.SignedString([]byte(app.Secret))
 
 	os.Exit(m.Run())
