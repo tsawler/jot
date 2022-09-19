@@ -21,16 +21,14 @@ type Auth struct {
 	CookieName    string        `default:"__Host-refresh_token"` // the name of the refresh token cookie
 }
 
-// User is a generic type used to hold the minimal amount of data
-// we require in order to issue tokens.
+// User is a generic type used to hold the minimal amount of data we require in order to issue tokens.
 type User struct {
 	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
 
-// TokenPairs is the type used to generate JSON containing the
-// JWT token and the refresh token.
+// TokenPairs is the type used to generate JSON containing the JWT token and the refresh token.
 type TokenPairs struct {
 	Token        string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
@@ -99,8 +97,8 @@ func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 	return token, claims, nil
 }
 
-// GenerateTokenPair takes a user of type jot.User and attempts to generate a pair of tokens
-// for that user (jwt and refresh tokens).
+// GenerateTokenPair takes a user of type jot.User and attempts to generate a pair of tokens for that user
+// (jwt and refresh tokens).
 func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -148,8 +146,8 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	return tokenPairs, nil
 }
 
-// GetRefreshCookie returns a cookie containing the refresh token. Note that
-// the cookie is http only, secure, and set to same site strict mode.
+// GetRefreshCookie returns a cookie containing the refresh token. Note that the cookie is http only,
+// secure, and set to same site strict mode.
 func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	c := &http.Cookie{
 		Name:     j.CookieName,
