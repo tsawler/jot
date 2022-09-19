@@ -164,8 +164,8 @@ func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	return c
 }
 
-// GetExpiredRefreshCookie is a convenience method to return a cookie suitable
-// for forcing a user's browser to delete the existing cookie.
+// GetExpiredRefreshCookie is a convenience method to return a cookie suitable for forcing a user's browser
+// to delete the existing cookie.
 func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
 	return &http.Cookie{
 		Name:     j.CookieName,
