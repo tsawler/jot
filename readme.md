@@ -15,6 +15,9 @@ This module uses [github.com/golang-jwt/jwt/v4](https://github.com/golang-jwt/jw
 simply adds some convenience methods for extracting a token
 from request headers and validating it, and for getting refresh token cookies.
 
+I wrote this simply because I became tired of writing the same code over and over again. It is intended for my own use, 
+but someone else might find it helpful.
+
 Usage:
 
 ```golang
