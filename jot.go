@@ -149,7 +149,7 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 // GetRefreshCookie returns a cookie containing the refresh token. Note that the cookie is http only, secure,
 // and set to same site strict mode.
 func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
-	c := &http.Cookie{
+	return &http.Cookie{
 		Name:     j.CookieName,
 		Path:     j.CookiePath,
 		Value:    refreshToken,
@@ -160,8 +160,6 @@ func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 		HttpOnly: true,
 		Secure:   true,
 	}
-
-	return c
 }
 
 // GetExpiredRefreshCookie is a convenience method to return a cookie suitable for forcing a user's browser
