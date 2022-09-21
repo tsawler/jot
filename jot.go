@@ -11,14 +11,14 @@ import (
 
 // Auth is the type used to instantiate this package.
 type Auth struct {
-	Issuer        string        // who issues the token, e.g. company.com
-	Audience      string        // who is the token for, e.g. company.com
-	Secret        string        // a strong secret, used to sign the tokens
-	TokenExpiry   time.Duration // when does the token expire, e.g. time.Minute * 15
-	RefreshExpiry time.Duration // when does the refresh token expire, e.g. time.Hour * 24
-	CookieDomain  string        // the domain, for refresh cookies
-	CookiePath    string        `default:"/"`                    // the path, for refresh cookies (defaults to "/")
-	CookieName    string        `default:"__Host-refresh_token"` // the name of the refresh token cookie
+	Issuer        string        // Who issues the token, e.g. company.com.
+	Audience      string        // Who is the token for, e.g. company.com.
+	Secret        string        // A strong secret, used to sign the tokens.
+	TokenExpiry   time.Duration // When does the token expire, e.g. time.Minute * 15.
+	RefreshExpiry time.Duration // When does the refresh token expire, e.g. time.Hour * 24.
+	CookieDomain  string        // The domain, for refresh cookies.
+	CookiePath    string        `default:"/"`                    // The path, for refresh cookies (defaults to "/").
+	CookieName    string        `default:"__Host-refresh_token"` // The name of the refresh token cookie.
 }
 
 // User is a generic type used to hold the minimal amount of data we require in order to issue tokens.
