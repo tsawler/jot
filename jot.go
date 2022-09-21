@@ -44,32 +44,32 @@ type Claims struct {
 func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Request) (string, *Claims, error) {
 	w.Header().Add("Vary", "Authorization")
 
-	// get the Authorization header
+	// Get the Authorization header.
 	authHeader := r.Header.Get("Authorization")
 
-	// sanity check
+	// Sanity check.
 	if authHeader == "" {
 		return "", nil, errors.New("no auth header")
 	}
 
-	// split the header up on spaces
+	// Split the header up on spaces.
 	headerParts := strings.Split(authHeader, " ")
 	if len(headerParts) != 2 {
 		return "", nil, errors.New("invalid auth header")
 	}
 
-	// check to see if we have the word "Bearer" in the right spot (we should)
+	// Check to see if we have the word "Bearer" in the right spot (we should).
 	if headerParts[0] != "Bearer" {
 		return "", nil, errors.New("unauthorized - no bearer")
 	}
 
-	// get the actual token
+	// Get the actual token.
 	token := headerParts[1]
 
-	// declare an empty Claims variable
+	// Declare an empty Claims variable.
 	claims := &Claims{}
 
-	// parse the token with our claims (we read into claims), using our secret (from the receiver)
+	// Parse the token with our claims (we read into claims), using our secret (from the receiver).
 	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
 		// validate the signing algorithm is what we expect
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -100,10 +100,10 @@ func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 // GenerateTokenPair takes a user of type jot.User and attempts to generate a pair of tokens for that user
 // (jwt and refresh tokens).
 func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
-	// Create token
+	// Create token.
 	token := jwt.New(jwt.SigningMethodHS256)
 
-	// set claims
+	// Set claims.
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
 	claims["sub"] = fmt.Sprint(user.ID)
@@ -112,37 +112,37 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 	claims["iat"] = time.Now().UTC().Unix()
 	claims["typ"] = "JWT"
 
-	// set expiry; should be short!
+	// Set expiry; should be short!
 	claims["exp"] = time.Now().UTC().Add(j.TokenExpiry).Unix()
 
-	// create signed token
+	// Create signed token.
 	signedAccessToken, err := token.SignedString([]byte(j.Secret))
 	if err != nil {
 		return TokenPairs{}, err
 	}
 
-	// create refresh token and set claims (just subject and expiry)
+	// Create refresh token and set claims (just subject and expiry).
 	refreshToken := jwt.New(jwt.SigningMethodHS256)
 	refreshTokenClaims := refreshToken.Claims.(jwt.MapClaims)
 	refreshTokenClaims["sub"] = fmt.Sprint(user.ID)
 	refreshTokenClaims["iat"] = time.Now().UTC().Unix()
 
-	// set expiry; must be longer than JWT token expiry!
+	// Set expiry; must be longer than JWT token expiry!
 	refreshTokenClaims["exp"] = time.Now().UTC().Add(j.RefreshExpiry).Unix()
 
-	// create signed refresh token
+	// Create signed refresh token.
 	signedRefreshToken, err := refreshToken.SignedString([]byte(j.Secret))
 	if err != nil {
 		return TokenPairs{}, err
 	}
 
-	// create token pairs and populate with signed tokens
+	// Create token pairs and populate with signed tokens.
 	var tokenPairs = TokenPairs{
 		Token:        signedAccessToken,
 		RefreshToken: signedRefreshToken,
 	}
 
-	// return the token pair, and no error
+	// Return the token pair, and no error.
 	return tokenPairs, nil
 }
 
