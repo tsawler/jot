@@ -39,7 +39,8 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-// New returns an instance of Auth, with sensible defaults where possible.
+// New returns an instance of Auth, with sensible defaults where possible. Naturally,
+// any of defaults can be overridden, if necessary.
 func New(d string) Auth {
 	return Auth{
 		Issuer:        d,
@@ -48,6 +49,7 @@ func New(d string) Auth {
 		RefreshExpiry: time.Hour * 24,
 		CookieName:    "__Host-refresh_token",
 		CookiePath:    "/",
+		CookieDomain:  d,
 	}
 }
 
