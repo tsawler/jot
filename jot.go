@@ -17,8 +17,8 @@ type Auth struct {
 	TokenExpiry   time.Duration // When does the token expire, e.g. time.Minute * 15.
 	RefreshExpiry time.Duration // When does the refresh token expire, e.g. time.Hour * 24.
 	CookieDomain  string        // The domain, for refresh cookies.
-	CookiePath    string        `default:"/"`                    // The path, for refresh cookies (defaults to "/").
-	CookieName    string        `default:"__Host-refresh_token"` // The name of the refresh token cookie.
+	CookiePath    string        // The path, for refresh cookies.
+	CookieName    string        // The name of the refresh token cookie.
 }
 
 // User is a generic type used to hold the minimal amount of data we require in order to issue tokens.

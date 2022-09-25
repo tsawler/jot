@@ -40,6 +40,8 @@ func main() {
 		TokenExpiry:   time.Minute * 15,
 		RefreshExpiry: time.Hour * 24,
 		CookieDomain:  "localhost",
+		CookiePath: "/",
+		CookieName: "__Host-refresh_token",
 	}
 
 	// set up a test user
