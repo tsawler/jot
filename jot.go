@@ -39,6 +39,18 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+// New returns an instance of Auth, with sensible defaults where possible.
+func New(d string) Auth {
+	return Auth{
+		Issuer:        d,
+		Audience:      d,
+		TokenExpiry:   time.Minute * 15,
+		RefreshExpiry: time.Hour * 24,
+		CookieName:    "__Host-refresh_token",
+		CookiePath:    "/",
+	}
+}
+
 // GetTokenFromHeaderAndVerify extracts a token from the Authorization header, verifies it, and returns the
 // token, the claims, and error, if any.
 func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Request) (string, *Claims, error) {
