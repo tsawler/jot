@@ -40,14 +40,14 @@ type Claims struct {
 }
 
 // New returns an instance of Auth, with sensible defaults where possible. Naturally,
-// any of defaults can be overridden, if necessary.
+// any of defaults can be overridden.
 func New(d string) Auth {
 	return Auth{
 		Issuer:        d,
 		Audience:      d,
 		TokenExpiry:   time.Minute * 15,
 		RefreshExpiry: time.Hour * 24,
-		CookieName:    "__Host-refresh_token",
+		CookieName:    "refresh_token",
 		CookiePath:    "/",
 		CookieDomain:  d,
 	}
