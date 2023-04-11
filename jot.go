@@ -135,7 +135,7 @@ func (j *Auth) GenerateTokenPair(user *User) (TokenPairs, error) {
 		return TokenPairs{}, err
 	}
 
-	// Create refresh token and set claims (just subject and expiry).
+	// Create refresh token and set claims (just subject, issued at, and expiry).
 	refreshToken := jwt.New(jwt.SigningMethodHS256)
 	refreshTokenClaims := refreshToken.Claims.(jwt.MapClaims)
 	refreshTokenClaims["sub"] = fmt.Sprint(user.ID)
