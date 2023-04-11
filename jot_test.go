@@ -121,3 +121,12 @@ func TestJotGetExpiredRefreshCookie(t *testing.T) {
 		t.Error("cookie expiration set to future, and should not be")
 	}
 }
+
+func TestJotNew(t *testing.T) {
+	var j = New("example.com")
+
+	if j.CookieName != "refresh_token" {
+		t.Error("refresh token name not expected value of `refresh_token`")
+	}
+
+}
