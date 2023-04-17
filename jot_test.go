@@ -93,7 +93,6 @@ func TestJotGetTokenFromHeaderAndVerifyWithBadIssuer(t *testing.T) {
 	if err == nil {
 		t.Error("should have error for bad issuer, but do not")
 	}
-
 }
 
 func TestJotGetRefreshCookie(t *testing.T) {
@@ -128,5 +127,4 @@ func TestJotNew(t *testing.T) {
 	if j.CookieName != "refresh_token" {
 		t.Error("refresh token name not expected value of `refresh_token`")
 	}
-
 }
