@@ -2,9 +2,10 @@ name: Tests
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
 
@@ -38,3 +39,6 @@ jobs:
 
       - name: Run tests
         run: go test -race -vet=off ./...
+
+      - name: Update coverage report
+        uses: ncruces/go-coverage-report@main
